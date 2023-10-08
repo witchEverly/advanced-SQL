@@ -7,3 +7,4 @@ This repository often cites text from the [PostgreSQL 14 Documentation](https://
 Some mock data used refers to examples from the [PostgreSQL Tutorial](https://www.postgresqltutorial.com/).
 
 OpenAI's GPT-4 was used to generate mock data. The prompt's used to generate the mock data are in the `gpt4-prompts.md` file.
+
