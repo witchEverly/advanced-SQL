@@ -89,7 +89,7 @@ WHERE avg > 6500;
 
 # WINDOW FUNCTION
 
-### `OVER()`
+##### `OVER()`
 
 ```postgresql
 SELECT order_id,
@@ -97,25 +97,25 @@ SELECT order_id,
 FROM orders
 ```
 
-### `OVER(PARTITION BY)`
+##### `OVER(PARTITION BY)`
 
 ```postgresql
 
 ```
 
-### `OVER(PARTITION BY ORDER BY)`
+##### `OVER(PARTITION BY ORDER BY)`
 
 ```postgresql
 
 ```
 
-### `OVER(PARTITION BY ORDER BY ROWS BETWEEN)`
+##### `OVER(PARTITION BY ORDER BY ROWS BETWEEN)`
 
 ```postgresql
 
 ```
 
-### `OVER(PARTITION BY ORDER BY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`
+##### `OVER(PARTITION BY ORDER BY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`
 
 ```postgresql
 

@@ -12,9 +12,7 @@ The window function's result is evaluated against the rows within the current ro
 
 The rows considered by a window function are those of the “virtual table” produced by the query's `FROM` clause as filtered by its `WHERE`, `GROUP BY`, and `HAVING` clauses if any. For example, a row removed because it does not meet the `WHERE` condition is not seen by any window function. A query can contain multiple window functions that slice up the data in different ways using different `OVER` clauses, but they all act on the same collection of rows defined by this virtual table.
 
-We already saw that `ORDER BY` can be omitted if the ordering of rows is not important. It is also possible to omit `PARTITION BY`, in which case there is a single partition containing all rows.
-
-There is another important concept associated with window functions: for each row, there is a set of rows within its partition called its window frame. Some window functions act only on the rows of the window frame, rather than of the whole partition. By default, if `ORDER BY` is supplied then the frame consists of all rows from the start of the partition up through the current row, plus any following rows that are equal to the current row according to the `ORDER BY` clause. When `ORDER BY` is omitted the default frame consists of all rows in the partition.
+For each row, there is a set of rows within its partition called its window frame. Some window functions act only on the rows of the window frame, rather than of the whole partition. By default, if `ORDER BY` is supplied then the frame consists of all rows from the start of the partition up through the current row, plus any following rows that are equal to the current row according to the `ORDER BY` clause. When `ORDER BY` is omitted the default frame consists of all rows in the partition.
 
 ----------------
 
@@ -41,7 +39,72 @@ FROM days_between_ship_and_send;
 ```
 ------------------
 
-##### Simple Window Functions
+# Syntax
+
+**Define Aggregate Function or Non-Aggregate Function**
+
+- Non-Aggregate Function Examples
+  - row_number()
+  - first_value()
+  - last_value()
+  - lag()
+  - lead()
+
+**Define window `OVER ()`**
+  - `PARTITION BY` (optional)
+  - `ORDER BY` (can be omitted)
+
+**Window Frame Clause (goes within `OVER ()`)**
+
+- `ROWS`
+- `ROWS BETWEEN <start> AND <end>`
+  - `UNBOUNDED` [`PRECEDING`, `FOLLOWING`]
+  - `n` [`PRECEDING`, `FOLLOWING`]
+  - `CURRENT ROW`
+
+------
+## Trash Examples 
+
+
+##### `OVER()`
+
+```postgresql
+SELECT order_id,
+       order_date OVER()
+FROM orders
+```
+
+##### `OVER(PARTITION BY)`
+
+```postgresql
+
+```
+
+##### `OVER(PARTITION BY ORDER BY)`
+
+```postgresql
+
+```
+
+##### `OVER(PARTITION BY ORDER BY ROWS BETWEEN)`
+
+```postgresql
+
+```
+
+##### `OVER(PARTITION BY ORDER BY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`
+
+```postgresql
+
+```
+
+
+
+```postgresql
+
+```
+
+
 
 ```postgresql
 SELECT salary, avg(salary)
@@ -106,3 +169,5 @@ SELECT depname, empno, salary,
     last_value(salary) OVER (PARTITION BY depname ORDER BY salary) AS lv
 FROM empsalary;
 ```
+
+
