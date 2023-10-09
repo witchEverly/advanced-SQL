@@ -38,7 +38,7 @@ Durability ensures that once a transaction has been committed, it remains that w
 - The `BEGIN` statement marks the start of a transaction block, while the `COMMIT` or `ROLLBACK` statements mark the end of a transaction block.
 
 
-```postgresql
+
 
 
 

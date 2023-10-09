@@ -18,73 +18,26 @@ There is another important concept associated with window functions: for each ro
 
 ----------------
 
-From Northwinds DB
-
-| product\_id | category\_id | supplier\_id | unit\_price | units\_in\_stock |
-|:------------|:-------------|:-------------|:------------|:-----------------|
-| 1           | 1            | 8            | 18          | 39               |
-| 2           | 1            | 1            | 19          | 17               |
-| 3           | 2            | 1            | 10          | 13               |
-| 4           | 2            | 2            | 22          | 53               |
-| 5           | 2            | 2            | 21.35       | 0                |
-
-
-There are queries and tables, match each query to the given table.
-
-```postgresql
-SELECT supplier_id,
-       avg(unit_price) OVER (PARTITION BY supplier_id)
-FROM northwinds_window_example_data -- this is a view in the northwinds db
-ORDER BY supplier_id;
-```
-
-```postgresql
-SELECT supplier_id,
-       avg(unit_price) OVER (PARTITION BY supplier_id ORDER BY supplier_id)
-FROM northwinds_window_example_data; -- this is a view in the northwinds db
-```
-
-
-<details>
-<summary> Will these queries have the same result?</summary>
-
-Yes, because the aggregate function is not relying on `ORDER BY`
-</details>
-
-
-----------------
-
 ```postgresql
 SELECT count(order_id) FROM orders; -- 830 orders in db
 ```
 
+
 ```postgresql
-SELECT 
-       ship_city,
-       sum(order_id) OVER (PARTITION BY ship_city ORDER BY employee_id
-           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
-
-
+WITH days_between_ship_and_send AS (
+    SELECT 
+        employee_id,
+        order_date,
+        shipped_date - order_date AS days_until_order_shipped
 FROM northwinds.public.orders
 WHERE ship_country = 'USA'
-```
-
-
-##### Lets review group by
-
-Same resulting table, but with a different query
-
-```postgresql
-SELECT depname, 
-       empno, 
-       salary,
-       avg(salary) AS avg_salary
-FROM empsalary
-GROUP BY depname, empno, salary;
-```
-
-```postgresql
-SELECT * FROM empsalary;
+    )
+SELECT 
+    employee_id,
+    order_date,
+    AVG(days_until_order_shipped) 
+        OVER (PARTITION BY order_date ORDER BY order_date)
+FROM days_between_ship_and_send;
 ```
 ------------------
 

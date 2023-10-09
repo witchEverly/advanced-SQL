@@ -47,7 +47,8 @@ SELECT func_name();
 
 
 # CTE (Common Table Expression)
-
+- Can't be indexed
+- Temporary
 
 ```postgresql
 /*
