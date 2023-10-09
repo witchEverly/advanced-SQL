@@ -50,13 +50,15 @@ BEGIN TRANSACTION -- start a transaction;
 -- updates
 -- inserts
 -- deletes
-COMMIT -- commit a transaction;
-ROLLBACK -- rollback a transaction;
+COMMIT -- commit a transaction (ends transaction block);
+ROLLBACK -- rollback a transaction (ends transaction block);
 ```
 
 ## Four Types of Isolation Levels
 
+> Even if you set a transaction to Read Uncommitted, it will behave as if it's set to Read Committed.
 
+> The default level. A query sees only the data committed before the query began.
 
 ### Read Committed
 
@@ -66,39 +68,66 @@ BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED
     SELECT COUNT(*) FROM table
     SELECT COUNT(*) FROM table;
 
--- Equailent to READ COMMITTED
+-- Equal to READ COMMITTED
 BEGIN
     SELECT COUNT(*) FROM table;
     SELECT COUNT(*) FROM table;
 ```
 
-
 ### Read Uncommitted
 ```postgresql
-BEGIN TRANSACTION 
-    ISOLATION LEVEL 
+BEGIN TRANSACTION ISOLATION LEVEL 
     READ UNCOMMITTED;
 ```
 
-
-
 ###  Serializable
 > until the first transaction completes, the second transaction cannot start. 
+
 ```postgresql
-BEGIN TRANSACTION 
-    ISOLATION LEVEL 
+BEGIN TRANSACTION ISOLATION LEVEL 
     SERIALIZABLE;
 ```
 
 
 ### Repeatable Read
+
+> All queries within a transaction see the same snapshot of the data, taken at the start of the transaction.
+
 > Allows for insert 
 ```postgresql
-BEGIN TRANSACTION 
-    ISOLATION LEVEL 
+BEGIN TRANSACTION ISOLATION LEVEL 
     REPEATABLE READ;
 ```
 
 
+### Types of Anomalies
+
+
+#### Dirty Read: Reading uncommitted data
+- `Read Uncommitted`
+Transaction A writes data to a row, but does not commit. 
+Transaction B reads the data, but Transaction A rolls back. 
+Transaction B has read data that was never committed. 
+
+#### Non-repeatable Read
+"It's not going to read uncommitted data, but it will read data that has been changed by another transaction."
+- `Read Committed` ????? That is uncommitted isnt it??? ---> not in postgres?
+Transaction A reads a row, Transaction B updates the row, Transaction A reads the row again.
+Transaction A has read data that has been changed by another transaction.
+
+
+#### Serializable Anomaly
+Transaction A reads a row, Transaction B reads the same row, 
+Transaction A updates the row, Transaction B updates the row.
+This would cause a conflict, because Transaction B would be updating data
+that has been changed by Transaction A.
+
+#### Phantom Read:
+Transaction A reads a row, Transaction B inserts a row, 
+Transaction A reads the row again.
+
+
+#### Lost Update
+One transaction overwrites the data of another transaction.
 
 
