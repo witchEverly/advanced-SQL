@@ -27,17 +27,77 @@ Consistency ensures that a transaction takes a database from one consistent stat
 ### Isolation
 Isolation ensures that concurrent transactions are executed in such a way that their **interleaved** execution has the same effect as if they were executed sequentially. This is important to ensure that one transaction doesn't interfere with another.
 
+*Transactions are independent of each other: 
+When there are several transactions happen concurrently, 
+users should be able to understand a transaction without 
+considering the effect of other concurrently existing transaction.*
+
 ### Durability
 Durability ensures that once a transaction has been committed, it remains that way even in the face of system failures, crashes, or errors. This is usually achieved through the use of database logs and other mechanisms that can recover the database to the last known consistent state.
 
 ----------------
 
-## PostgreSQL Transaction Syntax
+# PostgreSQL Transactions
+
+## Syntax
 
 - Transactions are managed using the `BEGIN`, `COMMIT`, and `ROLLBACK` statements. 
 - The `BEGIN` statement marks the start of a transaction block, while the `COMMIT` or `ROLLBACK` statements mark the end of a transaction block.
 
+```postgresql
+BEGIN TRANSACTION -- start a transaction;
+-- queries
+-- updates
+-- inserts
+-- deletes
+COMMIT -- commit a transaction;
+ROLLBACK -- rollback a transaction;
+```
 
+## Four Types of Isolation Levels
+
+
+
+### Read Committed
+
+```postgresql
+-- postgres default
+BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED
+    SELECT COUNT(*) FROM table
+    SELECT COUNT(*) FROM table;
+
+-- Equailent to READ COMMITTED
+BEGIN
+    SELECT COUNT(*) FROM table;
+    SELECT COUNT(*) FROM table;
+```
+
+
+### Read Uncommitted
+```postgresql
+BEGIN TRANSACTION 
+    ISOLATION LEVEL 
+    READ UNCOMMITTED;
+```
+
+
+
+###  Serializable
+> until the first transaction completes, the second transaction cannot start. 
+```postgresql
+BEGIN TRANSACTION 
+    ISOLATION LEVEL 
+    SERIALIZABLE;
+```
+
+
+### Repeatable Read
+> Allows for insert 
+```postgresql
+BEGIN TRANSACTION 
+    ISOLATION LEVEL 
+    REPEATABLE READ;
+```
 
 
 
