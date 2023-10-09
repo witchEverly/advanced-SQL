@@ -1,13 +1,7 @@
 
-```text
 
-```
-
-
-Custom Instructions:
-
+**Custom Instructions:**
 I use PostgreSQL 14.9 (Homebrew) on aarch64-apple-darwin21.6.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
-
 
 # acid-transactions.md
 

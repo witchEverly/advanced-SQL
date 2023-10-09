@@ -1,7 +1,63 @@
-
-# CTE
+# VIEWS
 
 ```postgresql
+/*
+
+----------------------------
+CREATE VIEW <view_name> AS
+    <query>;
+-----------------------------
+CREATE OR REPLACE VIEW <view_name> AS
+    <query>;
+-----------------------------
+CREATE OR REPLACE VIEW <view_name> AS
+    <query>
+WITH CHECK OPTION;
+-----------------------------
+
+ */
+ 
+CREATE VIEW view_name AS
+    SELECT * FROM table_name;
+SELECT * FROM view_name;
+```
+
+# FUNCTION
+
+```postgresql
+/* 
+---------------------------- 
+CREATE OR REPLACE FUNCTION <func_name>()
+RETURNS <return_dtype> AS 
+$$
+    <query>
+$$ 
+LANGUAGE SQL;
+-----------------------------
+*/ 
+
+CREATE OR REPLACE FUCNTION func_name()
+RETURNS int 
+    (
+    SELECT col from table
+    )
+    
+SELECT func_name();
+```
+
+
+# CTE (Common Table Expression)
+
+
+```postgresql
+/*
+----------------------------
+WITH <cte_name> AS (<query>)
+SELECT * FROM <cte_name>
+-----------------------------
+*/
+
+
 WITH newtable AS 
     (
     SELECT 
@@ -18,27 +74,26 @@ FROM newtable
 WHERE avg > 6500;
 ```
 
-```postgresql
-```
 
-# FUNCTION
+| empno | salary |
+|:------|:-------|
+| 6     | 8000   |
+| 7     | 8500   |
+| 2     | 7500   |
+| 3     | 6200   |
+| 1     | 7000   |
 
-```postgresql
-CREATE OR REPLACE FUCNTION func_name()
-RETURNS int 
-    (
-    SELECT col from table
-    )
-    
-SELECT func_name();
-```
+
+
 
 # WINDOW FUNCTION
 
 ### `OVER()`
 
 ```postgresql
-
+SELECT order_id,
+       order_date OVER()
+FROM orders
 ```
 
 ### `OVER(PARTITION BY)`
@@ -68,6 +123,6 @@ SELECT func_name();
 
 
 ```postgresql
-select version();
+
 ```
 
